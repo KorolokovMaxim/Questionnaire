@@ -1,0 +1,200 @@
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+}
+.wrapper{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+.logo{
+    width: 100%;
+    height:300px;
+    display: flex;
+
+}
+
+.form {
+    padding: 20px 15px;
+    min-height: 250px;
+    text-align: center;
+}
+
+input {
+    display: block;
+    outline: none;
+    padding: 15px 10px;
+    border: solid 1px transparent;
+    background: none;
+    color: #0a0a0a;
+    width: 200px;
+    transition: border-color 1s;
+    margin: 0 auto;
+}
+
+input:focus {
+    border-color: royalblue;
+}
+
+.form button {
+    padding: 10px;
+    color: white;
+    background: royalblue;
+    border: none;
+    width: 200px;
+    margin-left: 30px;
+    transition: 0.2s;
+    cursor: pointer;
+}
+
+.form button:hover {
+    background: rgb(114, 149, 255);
+}
+
+.action {
+    color: #1a1919;
+    text-align: center;
+    font-size: 18px;
+    margin: 30px;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.load {
+    position: relative;
+    margin: 2px 5px;
+    padding-bottom: 5px;
+    border-bottom: solid 2px transparent;
+    cursor: pointer;
+    transition: 0.5s;
+}
+
+.load.show {
+    border-bottom-color: royalblue;
+    text-align: center;
+}
+
+.form a {
+    color: #cb5d5d;
+    text-decoration: none;
+    display: block;
+    margin: 15px;
+    text-align: center;
+    transition: 0.5s;
+}
+
+.form a:hover {
+    color: royalblue;
+}
+
+.login {
+    display: none;
+}
+
+.reg {
+    display: none;
+}
+
+.show-page {
+    display: block;
+    animation: show-page 1s;
+}
+
+@keyframes show-page {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+h1 {
+    color: #c00;
+    font-family: sans-serif;
+    font-size: 2em;
+    margin-bottom: 0;
+}
+table {
+    font-family: sans-serif;
+    overflow: scroll;
+}
+table th, table td {
+    padding: 1.15em 3.5em;
+    text-align: center;
+}
+table th:nth-child(2), table td:nth-child(2) {
+    text-align: right;
+}
+table td {
+    background-color: #eee;
+}
+table th {
+    background-color: #00990d;
+    color: #000;
+}
+.zigzag {
+    border-collapse: separate;
+    border-spacing: 0.25em 1em;
+}
+.zigzag tbody tr:nth-child(odd) {
+    transform: rotate(2deg);
+}
+.zigzag thead tr, .zigzag tbody tr:nth-child(even) {
+    transform: rotate(-2deg);
+}
+.number{
+    display: flex;
+}
+.numberCircle {
+    width: 60px;
+    border-radius: 50%;
+    text-align: center;
+    font-size: 28px;
+    margin: 3px;
+    border: 2px solid #666;
+}
+.numberCircle:hover{
+    cursor: pointer;
+}
+.display{
+    display: block;
+    outline: none;
+    border-radius: 50px;
+    padding: 15px 10px;
+    border: solid 1px transparent;
+    background: #e7e6e6;
+    color: #0a0a0a;
+    font-weight: 900;
+    width: 400px;
+    text-align: center;
+    font-size: 36px;
+    transition: border-color 1s;
+    margin: 0 auto;
+}
+#delete{
+    display: block;
+    outline: none;
+    border-radius: 50px;
+    padding: 12px 23px;
+    border: solid 1px transparent;
+    background: #f00;
+    color: #0a0a0a;
+    width: 200px;
+    transition: border-color 1s;
+    margin: 0 auto;
+    color: black;
+    font-size: 21px;
+    borderd: 2px solid black;
+}
+
+
