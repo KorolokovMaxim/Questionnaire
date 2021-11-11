@@ -22,7 +22,16 @@ public class Question {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "question", orphanRemoval = true)
     private List<Answers> answers = new ArrayList<>();
 
+    @Transient
+    private List<Question> questions;
+
     public Question() {
+
+    }
+
+    public Question(String name , Questionnaire questionnaire) {
+        this.name = name;
+        this.questionnaire = questionnaire;
     }
 
     public Long getId() {
@@ -55,6 +64,13 @@ public class Question {
 
     public void setAnswers(List<Answers> answers) {
         this.answers = answers;
+    }
+
+
+    public List<Question> setQuestions(List<Question> questions){
+
+        List<Question> questions1 = new ArrayList<>(questions);
+        return questions1;
     }
 
     @Override
