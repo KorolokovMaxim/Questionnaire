@@ -17,10 +17,15 @@ public class Questionnaire {
     @Column(name = "name")
     private String name;
 
+
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "questionnaire", orphanRemoval = true)
     private List<Question> questions = new ArrayList<>();
 
     public Questionnaire() {
+    }
+
+    public Questionnaire(String name) {
+        this.name = name;
     }
 
     public Long getId() {
@@ -47,6 +52,8 @@ public class Questionnaire {
         this.questions = questions;
     }
 
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -58,5 +65,14 @@ public class Questionnaire {
     @Override
     public int hashCode() {
         return Objects.hash(id, name, questions);
+    }
+
+    @Override
+    public String toString() {
+        return "Questionnaire{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", questions=" + questions +
+                '}';
     }
 }
