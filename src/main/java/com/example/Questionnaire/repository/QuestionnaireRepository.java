@@ -8,4 +8,6 @@ public interface QuestionnaireRepository  extends JpaRepository<Questionnaire, L
 
     Questionnaire findByName(String name);
 
+    Questionnaire findById(long id);
+
 }
