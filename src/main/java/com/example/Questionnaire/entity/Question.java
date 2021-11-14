@@ -1,10 +1,13 @@
 package com.example.Questionnaire.entity;
 
+import lombok.Data;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+@Data
 @Entity
 @Table(name = "question")
 public class Question {
@@ -22,67 +25,11 @@ public class Question {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "question", orphanRemoval = true)
     private List<Answers> answers = new ArrayList<>();
 
-    @Transient
-    private List<Question> questions;
+
 
     public Question() {
 
     }
 
-    public Question(String name , Questionnaire questionnaire) {
-        this.name = name;
-        this.questionnaire = questionnaire;
-    }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Questionnaire getQuestionnaire() {
-        return questionnaire;
-    }
-
-    public void setQuestionnaire(Questionnaire questionnaire) {
-        this.questionnaire = questionnaire;
-    }
-
-    public List<Answers> getAnswers() {
-        return answers;
-    }
-
-    public void setAnswers(List<Answers> answers) {
-        this.answers = answers;
-    }
-
-
-    public List<Question> setQuestions(List<Question> questions){
-
-        List<Question> questions1 = new ArrayList<>(questions);
-        return questions1;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Question question = (Question) o;
-        return Objects.equals(id, question.id) && Objects.equals(name, question.name) && Objects.equals(questionnaire, question.questionnaire) && Objects.equals(answers, question.answers);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, name, questionnaire, answers);
-    }
 }
