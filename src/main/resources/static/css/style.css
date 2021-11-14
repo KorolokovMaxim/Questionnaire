@@ -197,4 +197,60 @@ table th {
     borderd: 2px solid black;
 }
 
+.create-questionnaires {
+    width: 100%;
+    height: 100vh;
+    padding: 100px 0;
+}
+
+
+.create-questionnaires .create-question {
+    display: block;
+    width: 220px;
+    height: 50px;
+    line-height: 50px;
+    font-size: 16px;
+    font-weight: 500;
+    border-radius: 20px;
+    color: #fff;
+    background: cornflowerblue;
+    margin: 0 auto;
+    border: none;
+    outline: none;
+    cursor: pointer;
+}
+
+.create-questionnaires form {
+    width: 600px;
+    height: 100%;
+    padding: 20px 0;
+    margin: 0 auto;
+}
+
+.create-questionnaires #questions {
+    height: 80%;
+    overflow-y: auto;
+}
+
+.create-questionnaires .form-inputs {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.create-questionnaires .form-inputs input {
+    flex: 1 0 auto;
+    margin: 0 10px;
+    border: 1px solid #000;
+}
+
+.create-questionnaires .form-inputs label {
+    width: 128px;
+}
+
+.create-questionnaires .question-wrapper {
+    padding: 25px 0;
+    border-bottom: 1px solid #000;
+}
+
 
