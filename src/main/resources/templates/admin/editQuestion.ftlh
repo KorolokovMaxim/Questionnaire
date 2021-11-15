@@ -6,12 +6,30 @@
     <h1>Название вопроса - ${question.getName()}</h1>
 
 
-    <div class="create-questionnaires">
-        <button class="create-question">Добавить ответ</button>
-        <form action="/admin/saveEnswers" method="POST">
-            <input type="hidden" value="${_csrf.token}" name="_csrf">
-            <div id="answers"></div>
 
+
+
+    <div class="create-questionnaires">
+        <form action="/admin/deleteAnswers" method="POST">
+            <input type="hidden" value="${_csrf.token}" name="_csrf"/>
+        <#list answers as answer>
+            <br>
+            <label>Ответ</label>
+            <label><input  type="checkbox" name="answers[]" value="${answer.id}"> ${answer.name}</label>
+        </#list>
+            <input type="hidden" name="questionId" value="${question.id}"/>
+            <input type="submit" value="Delete">
+        </form>
+
+        <button class="create-question">Добавить ответ</button>
+        <form action="/admin/saveAnswers" method="POST">
+            <input type="hidden" value="${_csrf.token}" name="_csrf">
+
+
+            <div id="answers">
+            </div>
+
+            <input type="hidden" name="questionId" value="${question.id}">
             <input type="submit" value="Save">
         </form>
     </div>
@@ -21,12 +39,10 @@
         const form = document.querySelector('form');
 
 
-
         createQuestionBtn.addEventListener('click', () => {
             const wrapper = document.createElement('div');
 
             wrapper.classList.add('question-wrapper');
-
 
 
             const qIndex = createQuestion(wrapper);
@@ -38,7 +54,6 @@
         const getQuestionsCount = () => {
             return document.querySelectorAll('.question-wrapper').length;
         };
-
 
 
         const createQuestion = (wrapper) => {
