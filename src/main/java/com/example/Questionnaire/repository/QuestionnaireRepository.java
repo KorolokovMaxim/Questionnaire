@@ -1,5 +1,6 @@
 package com.example.Questionnaire.repository;
 
+import com.example.Questionnaire.entity.Question;
 import com.example.Questionnaire.entity.Questionnaire;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -9,5 +10,7 @@ public interface QuestionnaireRepository  extends JpaRepository<Questionnaire, L
     Questionnaire findByName(String name);
 
     Questionnaire findById(long id);
+
+    Questionnaire findByQuestions(Question q);
 
 }
