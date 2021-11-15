@@ -6,9 +6,6 @@
 
 body {
     font-family: sans-serif;
-    display: flex;
-    align-items: center;
-    justify-content: center;
     min-height: 100vh;
 }
 .wrapper{
@@ -142,60 +139,7 @@ table th {
     background-color: #00990d;
     color: #000;
 }
-.zigzag {
-    border-collapse: separate;
-    border-spacing: 0.25em 1em;
-}
-.zigzag tbody tr:nth-child(odd) {
-    transform: rotate(2deg);
-}
-.zigzag thead tr, .zigzag tbody tr:nth-child(even) {
-    transform: rotate(-2deg);
-}
-.number{
-    display: flex;
-}
-.numberCircle {
-    width: 60px;
-    border-radius: 50%;
-    text-align: center;
-    font-size: 28px;
-    margin: 3px;
-    border: 2px solid #666;
-}
-.numberCircle:hover{
-    cursor: pointer;
-}
-.display{
-    display: block;
-    outline: none;
-    border-radius: 50px;
-    padding: 15px 10px;
-    border: solid 1px transparent;
-    background: #e7e6e6;
-    color: #0a0a0a;
-    font-weight: 900;
-    width: 400px;
-    text-align: center;
-    font-size: 36px;
-    transition: border-color 1s;
-    margin: 0 auto;
-}
-#delete{
-    display: block;
-    outline: none;
-    border-radius: 50px;
-    padding: 12px 23px;
-    border: solid 1px transparent;
-    background: #f00;
-    color: #0a0a0a;
-    width: 200px;
-    transition: border-color 1s;
-    margin: 0 auto;
-    color: black;
-    font-size: 21px;
-    borderd: 2px solid black;
-}
+
 
 .create-questionnaires {
     width: 100%;
@@ -222,7 +166,6 @@ table th {
 
 .create-questionnaires form {
     width: 600px;
-    height: 100%;
     padding: 20px 0;
     margin: 0 auto;
 }
