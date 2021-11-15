@@ -45,13 +45,11 @@ public class AdminController {
     }
 
     @GetMapping("/questionnaires/{questionnaire}")
-    public String questionnairesEdit(@PathVariable Questionnaire questionnaire ,
-                                     Question questions,
-                                     Model model){
+    public String questionnairesEdit(@PathVariable Questionnaire questionnaire,
+                                     Model model) {
 
-        model.addAttribute("questionnaire" , questionnaireRepository.findById(questionnaire.getId()));
-        model.addAttribute("questions" , questionRepository.findByQuestionnaire(questionnaire));
-
+        model.addAttribute("questionnaire", questionnaireRepository.findById(questionnaire.getId()));
+        model.addAttribute("questions", questionRepository.findByQuestionnaire(questionnaire));
 
 
         return "/admin/editQuestionnary";
@@ -60,12 +58,50 @@ public class AdminController {
     @GetMapping("/questionnaires/{questionnaire}/{question}")
     public String questionEdit(@PathVariable Questionnaire questionnaire,
                                @PathVariable Question question,
-                               Model model){
+                               Model model) {
 
         model.addAttribute("questionnaire", questionnaire);
         model.addAttribute("question", question);
+        model.addAttribute("answers", answersRepository.findAnswersByQuestion(question));
 
         return "/admin/editQuestion";
+
+    }
+
+    @PostMapping("/saveAnswers")
+    public String createAnswers(@RequestParam(name = "answers[]") List<String> answers,
+                                @RequestParam(name = "questionId") Question question) {
+
+        Questionnaire questionnaire = questionnaireRepository.findByQuestions(question);
+
+        List<Answers> answersList = new ArrayList<>();
+        for (String name : answers) {
+            Answers answersElem = new Answers();
+            answersElem.setName(name);
+            answersElem.setQuestion(question);
+            answersList.add(answersElem);
+        }
+
+        answersRepository.saveAll(answersList);
+
+        return "redirect:questionnaires/" + questionnaire.getId()+ "/" +question.getId();
+    }
+
+    @PostMapping("/deleteAnswers")
+    public String deleteAnswers(@RequestParam(name = "answers[]") List<String> answers,
+                                @RequestParam(name = "questionId") Question question ){
+
+        Questionnaire questionnaire = questionnaireRepository.findByQuestions(question);
+
+        List<Answers> deleteAnswersList = new ArrayList<>();
+        for (String answer : answers){
+            Optional<Answers> answersDelete = answersRepository.findById(Long.parseLong(answer));
+            deleteAnswersList.add(answersDelete.get());
+        }
+
+        answersRepository.deleteAll(deleteAnswersList);
+
+        return "redirect:questionnaires/" + questionnaire.getId()+ "/" +question.getId();
 
     }
 
@@ -75,7 +111,7 @@ public class AdminController {
         return "/admin/addQuestionnaires";
     }
 
-    //
+
     @PostMapping("/saveQuestionnaires")
     public String saveQuestionnaires(@RequestParam String questionnaireName,
                                      @RequestParam(name = "questions[]") List<String> questions) {
@@ -84,7 +120,6 @@ public class AdminController {
         long questionnaireId = saveQuestionaire(questionnaireName);
 
         Questionnaire q = questionnaireRepository.findById(questionnaireId);
-
 
 
         List<Question> questionListToSave = new ArrayList<>();
@@ -133,7 +168,6 @@ public class AdminController {
 //        answersRepository.save(answer);
 //
 //    }
-
 
 
     @GetMapping
