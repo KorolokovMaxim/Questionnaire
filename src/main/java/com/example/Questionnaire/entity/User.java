@@ -14,7 +14,7 @@ import java.util.Set;
  */
 
 @Entity
-@Table(name = "game_user")
+@Table(name = "q_user")
 public class User implements UserDetails {
 
     @Id
