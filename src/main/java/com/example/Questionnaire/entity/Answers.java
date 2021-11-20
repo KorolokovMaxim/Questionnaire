@@ -5,7 +5,7 @@ import lombok.Setter;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
-import java.util.Objects;
+import java.util.*;
 
 @Getter
 @Setter
@@ -23,8 +23,13 @@ public class Answers {
     @ManyToOne(fetch = FetchType.LAZY)
     private Question question;
 
+    @ManyToMany(mappedBy = "answers")
+    private List<User> users = new ArrayList<User>();
+
     public Answers() {
     }
+
+
 
     @Override
     public boolean equals(Object o) {

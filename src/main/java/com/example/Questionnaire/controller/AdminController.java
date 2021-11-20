@@ -9,13 +9,12 @@ import com.example.Questionnaire.repository.AnswersRepository;
 import com.example.Questionnaire.repository.QuestionRepository;
 import com.example.Questionnaire.repository.QuestionnaireRepository;
 import com.example.Questionnaire.repository.UserRepository;
-import org.dom4j.rule.Mode;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.PushBuilder;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -35,6 +34,51 @@ public class AdminController {
         this.questionnaireRepository = questionnaireRepository;
         this.questionRepository = questionRepository;
         this.answersRepository = answersRepository;
+    }
+
+
+    @GetMapping("/questionnaires")
+    public String addQuestionnaires() {
+        return "/admin/addQuestionnaires";
+    }
+
+
+    @PostMapping("/saveQuestionnaires")
+    public String saveQuestionnaires(@RequestParam String questionnaireName,
+                                     @RequestParam(name = "questions[]") List<String> questions,
+                                     Model model) {
+
+        long questionnaireId = saveQuestionnaires(questionnaireName);
+
+        Questionnaire q = questionnaireRepository.findById(questionnaireId);
+
+
+        List<Question> questionListToSave = new ArrayList<>();
+        for (String nameQuest : questions) {
+            Question question = new Question();
+            question.setName(nameQuest);
+            question.setQuestionnaire(q);
+            questionListToSave.add(question);
+        }
+
+        questionRepository.saveAll(questionListToSave);
+
+        return "redirect:/admin/questionnaires";
+
+    }
+
+    private Long saveQuestionnaires(String questionnaireName) {
+        Questionnaire createdQuestionnaire = new Questionnaire();
+        createdQuestionnaire.setName(questionnaireName);
+        questionnaireRepository.save(createdQuestionnaire);
+        return createdQuestionnaire.getId();
+    }
+
+    @PostMapping("deleteQuestionnaire")
+    public String deleteQuestionnaire(@RequestParam(name = "questionnaire") Questionnaire questionnaire) {
+
+        questionnaireRepository.delete(questionnaire);
+        return "redirect:/admin/questionnairesList";
     }
 
 
@@ -68,6 +112,17 @@ public class AdminController {
 
     }
 
+    @PostMapping("/deleteQuestion")
+    public String deleteQuestion(@RequestParam(name = "questionnaire") Questionnaire questionnaire,
+                                 @RequestParam(name = "deleteQuestion") Question question) {
+        questionRepository.delete(question);
+        if (questionnaire.getQuestions().size() == 0) {
+            questionnaireRepository.delete(questionnaire);
+            return "redirect:/admin/questionnairesList";
+        }
+        return "redirect:/admin/questionnaires/" + questionnaire.getId();
+    }
+
     @PostMapping("/saveAnswers")
     public String createAnswers(@RequestParam(name = "answers[]") List<String> answers,
                                 @RequestParam(name = "questionId") Question question) {
@@ -84,90 +139,24 @@ public class AdminController {
 
         answersRepository.saveAll(answersList);
 
-        return "redirect:questionnaires/" + questionnaire.getId()+ "/" +question.getId();
+        return "redirect:questionnaires/" + questionnaire.getId() + "/" + question.getId();
     }
 
     @PostMapping("/deleteAnswers")
-    public String deleteAnswers(@RequestParam(name = "answers[]") List<String> answers,
-                                @RequestParam(name = "questionId") Question question ){
+    public String deleteAnswers(@RequestParam(name = "answers[]") List<Answers> answers,
+                                @RequestParam(name = "questionId") Question question) {
 
         Questionnaire questionnaire = questionnaireRepository.findByQuestions(question);
 
-        List<Answers> deleteAnswersList = new ArrayList<>();
-        for (String answer : answers){
-            Optional<Answers> answersDelete = answersRepository.findById(Long.parseLong(answer));
-            deleteAnswersList.add(answersDelete.get());
+        for (Answers a : answers){
+            System.out.println(a.getName());
         }
 
-        answersRepository.deleteAll(deleteAnswersList);
+       answersRepository.deleteAll(answers);
 
-        return "redirect:questionnaires/" + questionnaire.getId()+ "/" +question.getId();
-
-    }
-
-
-    @GetMapping("/questionnaires")
-    public String addQuestionnaires() {
-        return "/admin/addQuestionnaires";
-    }
-
-
-    @PostMapping("/saveQuestionnaires")
-    public String saveQuestionnaires(@RequestParam String questionnaireName,
-                                     @RequestParam(name = "questions[]") List<String> questions) {
-
-
-        long questionnaireId = saveQuestionaire(questionnaireName);
-
-        Questionnaire q = questionnaireRepository.findById(questionnaireId);
-
-
-        List<Question> questionListToSave = new ArrayList<>();
-        for (String nameQuest : questions) {
-            Question question = new Question();
-            question.setName(nameQuest);
-            question.setQuestionnaire(q);
-            questionListToSave.add(question);
-        }
-
-        questionRepository.saveAll(questionListToSave);
-
-        return "redirect:/admin/questionnaires";
+        return "redirect:questionnaires/" + questionnaire.getId() + "/" + question.getId();
 
     }
-//@RequestParam(value="answers[][]") String[][] answers
-//            for (String answer : answers[i]){
-//                createAnswer(answer, q);
-//            }
-
-//    @RequestParam List<String>  questionId,
-//    @RequestParam(name = "answers[]") String answers,
-//    @RequestParam List<String> questionAnswerId,
-//    Model model
-
-
-    private Long saveQuestionaire(String questionnaireName) {
-        Questionnaire createdQuestionnaire = new Questionnaire();
-        createdQuestionnaire.setName(questionnaireName);
-        questionnaireRepository.save(createdQuestionnaire);
-        return createdQuestionnaire.getId();
-    }
-
-//    private Question saveQuestions(String name, Questionnaire questionnaire) {
-//        Question question = new Question();
-//        question.setName(name);
-//        question.setQuestionnaire(questionnaire);
-//        questionRepository.save(question);
-//        return question;
-//    }
-//
-//    private void createAnswer(String name, Question question) {
-//        Answers answer = new Answers();
-//        answer.setName(name);
-//        answer.setQuestion(question);
-//        answersRepository.save(answer);
-//
-//    }
 
 
     @GetMapping

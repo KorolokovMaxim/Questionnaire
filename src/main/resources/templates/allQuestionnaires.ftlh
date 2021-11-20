@@ -1,8 +1,8 @@
 <#import "parts/common.ftlh" as c>
 <@c.page>
 
-    <table>
-        <thead>
+    <table class="table">
+        <thead >
         <tr>
             <th>Название</th>
             <th></th>

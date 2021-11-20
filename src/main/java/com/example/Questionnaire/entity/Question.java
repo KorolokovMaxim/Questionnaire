@@ -27,8 +27,7 @@ public class Question {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "question", orphanRemoval = true)
     private List<Answers> answers = new ArrayList<>();
-
-
+    
 
     public Question() {
 

@@ -9,8 +9,6 @@ body {
     min-height: 100vh;
 }
 .wrapper{
-    display: flex;
-    flex-direction: column;
     text-align: center;
 }
 .logo{
@@ -102,8 +100,11 @@ input:focus {
 }
 
 .show-page {
-    display: block;
+    display: flex;
     animation: show-page 1s;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
 }
 
 @keyframes show-page {
@@ -113,31 +114,6 @@ input:focus {
     100% {
         opacity: 1;
     }
-}
-
-h1 {
-    color: #c00;
-    font-family: sans-serif;
-    font-size: 2em;
-    margin-bottom: 0;
-}
-table {
-    font-family: sans-serif;
-    overflow: scroll;
-}
-table th, table td {
-    padding: 1.15em 3.5em;
-    text-align: center;
-}
-table th:nth-child(2), table td:nth-child(2) {
-    text-align: right;
-}
-table td {
-    background-color: #eee;
-}
-table th {
-    background-color: #00990d;
-    color: #000;
 }
 
 
@@ -165,14 +141,13 @@ table th {
 }
 
 .create-questionnaires form {
-    width: 600px;
+    width: 80%;
     padding: 20px 0;
     margin: 0 auto;
 }
 
 .create-questionnaires #questions {
     height: 80%;
-    overflow-y: auto;
 }
 
 .create-questionnaires .form-inputs {
@@ -184,7 +159,6 @@ table th {
 .create-questionnaires .form-inputs input {
     flex: 1 0 auto;
     margin: 0 10px;
-    border: 1px solid #000;
 }
 
 .create-questionnaires .form-inputs label {
@@ -194,6 +168,30 @@ table th {
 .create-questionnaires .question-wrapper {
     padding: 25px 0;
     border-bottom: 1px solid #000;
+}
+.save_button{
+
+    background: #2cb12c;
+    color: white;
+    margin: 12px auto 0;
+    border-radius: 15px;
+}
+.delete-button{
+    cursor: pointer;
+    font-size: 23px;
+    color: red;
+    font-weight: 700;
+    transform: rotate(45deg);
+}
+
+.answers-input{
+    font-size: 22px;
+    padding-left: 12px;
+}
+.question-lead{
+    font-size: 35px;
+    color: currentColor;
+    font-weight: 700;
 }
 
 

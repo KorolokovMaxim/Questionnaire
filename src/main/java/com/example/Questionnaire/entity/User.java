@@ -5,9 +5,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import java.util.Collection;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Create user entity and table for database 'game_user'
@@ -27,6 +27,12 @@ public class User implements UserDetails {
     @Column(name = "active")
     private boolean active;
 
+    @ManyToMany(fetch = FetchType.EAGER , cascade = CascadeType.ALL)
+    @JoinTable(name = "user_answers",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "answers_id"))
+    private Set<Answers> answers = new HashSet<>();
+
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
@@ -35,6 +41,7 @@ public class User implements UserDetails {
 
     public User() {
     }
+
 
     public Long getId() {
         return id;
@@ -99,6 +106,14 @@ public class User implements UserDetails {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public Set<Answers> getAnswers() {
+        return answers;
+    }
+
+    public void setAnswers(Set<Answers> answers) {
+        this.answers = answers;
     }
 
     @Override
