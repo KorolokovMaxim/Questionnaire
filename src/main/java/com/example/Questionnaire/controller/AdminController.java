@@ -107,9 +107,9 @@ public class AdminController {
         questionRepository.delete(question);
         if (questionnaire.getQuestions().size() == 0) {
             questionnaireRepository.delete(questionnaire);
-            return "redirect:/admin/questionnairesList";
+            return "redirect:/admin/";
         }
-        return "redirect:/admin/questionnairesList/" + questionnaire.getId();
+        return "redirect:/admin/questionnaires/" + questionnaire.getId();
     }
 
     @PostMapping("/saveAnswers")

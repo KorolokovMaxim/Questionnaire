@@ -24,7 +24,7 @@ public class Question {
     @Column(name = "name")
     private String name;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.EAGER)
     private Questionnaire questionnaire;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "question", orphanRemoval = true)
