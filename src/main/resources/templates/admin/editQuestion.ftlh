@@ -81,6 +81,7 @@
             const questionWrapper = document.createElement('div');
             const questionLabel = document.createElement('label');
             const question = document.createElement('input');
+            const deleteBtn = document.createElement('div');
 
 
 

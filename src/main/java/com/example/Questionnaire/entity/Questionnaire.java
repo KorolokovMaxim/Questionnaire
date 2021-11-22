@@ -26,8 +26,7 @@ public class Questionnaire {
     private String name;
 
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "questionnaire", orphanRemoval = true)
-    @OnDelete(action = OnDeleteAction.CASCADE)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "questionnaire", orphanRemoval = true)
     private List<Question> questions = new ArrayList<>();
 
     public Questionnaire() {

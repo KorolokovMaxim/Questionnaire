@@ -27,8 +27,7 @@ public class Question {
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Questionnaire questionnaire;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "question", orphanRemoval = true)
-    @OnDelete(action = OnDeleteAction.CASCADE)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "question", orphanRemoval = true)
     private List<Answers> answers = new ArrayList<>();
 
 
