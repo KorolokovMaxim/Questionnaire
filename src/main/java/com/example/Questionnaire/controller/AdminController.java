@@ -1,7 +1,6 @@
 package com.example.Questionnaire.controller;
 
 import com.example.Questionnaire.entity.*;
-import com.example.Questionnaire.entity.enums.Role;
 import com.example.Questionnaire.repository.AnswersRepository;
 import com.example.Questionnaire.repository.QuestionRepository;
 import com.example.Questionnaire.repository.QuestionnaireRepository;
@@ -13,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 import java.util.*;
-import java.util.stream.Collectors;
+
 
 @Controller
 @RequestMapping("/admin")
@@ -75,7 +74,7 @@ public class AdminController {
     }
 
 
-    @GetMapping("/")
+    @GetMapping("")
     public String questionnaires(Model model) {
         model.addAttribute("questionnaires", questionnaireRepository.findAll());
         return "/admin/questionnairesList";
