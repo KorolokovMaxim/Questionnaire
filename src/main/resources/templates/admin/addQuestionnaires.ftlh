@@ -2,7 +2,9 @@
 <@c.page>
     <div class="create-questionnaires">
 
-        <button class="create-question">Добавть вопросы</button>
+        <a href="/admin/" class="accordion-button">Назад</a>
+
+        <button class="create-question">Добавить вопросы</button>
         <form action="/admin/saveQuestionnaires" method="POST">
             <input type="hidden" value="${_csrf.token}" name="_csrf">
 

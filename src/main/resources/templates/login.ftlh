@@ -2,6 +2,13 @@
 <@c.page>
 
 <div class="wrapper">
+
+
+    <h2>ВХОД ДЛЯ АДМИНИСТРАТОРА</h2>
+    <h3>username - admin</h3>
+    <h3>password - admin</h3>
+    <h3>страница входа - http://localhost:8080/admin</h3>
+
     <form action="/login" class="form" method="post">
         <div class="action">
             <span class="load show" id="login-action">ВОЙТИ</span>

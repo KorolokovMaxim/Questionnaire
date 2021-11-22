@@ -7,14 +7,11 @@
 
 <#list viewUserAnswers as val>
             <ul class="list-group" >
-
                 ${val.getQuestion().getName()}
                 <li class="list-group-item">
-
-                    <ul>
-
+                    <ul  class="list-group">
                         <#list val.getAnswers() as answer>
-                            <li>${answer.name}</li>
+                            <li class="list-group-item">${answer.name}</li>
                         </#list>
 
                     </ul>

@@ -1,13 +1,15 @@
 <#import "../parts/common.ftlh" as c>
 <@c.page>
 
-    <h2>Название опроса - ${questionnaire.getName()}</h2>
+    <h2 class="align-items-center">Название опроса - ${questionnaire.getName()}</h2>
 
-    <h1>Название вопроса - ${question.getName()}</h1>
+    <h1 class="align-items-center">Название вопроса - ${question.getName()}</h1>
 
 
 
     <div class="create-questionnaires">
+
+        <a href="/admin/questionnaires/${questionnaire.id}" class="accordion-button">Вернуться</a>
     <ul class="list-group">
         <table class="table">
             <thead>

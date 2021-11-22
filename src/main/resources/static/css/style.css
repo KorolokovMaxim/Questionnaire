@@ -178,10 +178,8 @@ input:focus {
 }
 .delete-button{
     cursor: pointer;
-    font-size: 23px;
-    color: red;
+    font-size: 15px;
     font-weight: 700;
-    transform: rotate(45deg);
 }
 
 .answers-input{

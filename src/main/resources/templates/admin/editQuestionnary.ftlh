@@ -3,7 +3,7 @@
 
     <h1>${questionnaire.get().name}</h1>
 
-
+    <a href="/admin/" class="accordion-button">Вернуться</a>
     <table class="table">
         <thead >
         <tr>

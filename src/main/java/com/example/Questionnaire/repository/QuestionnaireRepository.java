@@ -6,6 +6,7 @@ import com.example.Questionnaire.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
+import java.util.Set;
 
 public interface QuestionnaireRepository  extends JpaRepository<Questionnaire, Long> {
 
@@ -15,6 +16,10 @@ public interface QuestionnaireRepository  extends JpaRepository<Questionnaire, L
     Questionnaire findById(long id);
 
     Questionnaire findByQuestions(Question q);
+
+    List<Question> findAllByQuestions(Questionnaire questionnaire);
+
+
 
 
 

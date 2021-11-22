@@ -20,11 +20,14 @@ public class Answers {
     @Column(name = "name")
     private String name;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.PERSIST ,fetch = FetchType.EAGER)
     private Question question;
 
-    @ManyToMany(mappedBy = "answers")
-    private List<User> users = new ArrayList<User>();
+    @ManyToMany(cascade = CascadeType.PERSIST)
+    @JoinTable(name = "user_answers",
+            joinColumns = @JoinColumn(name = "answers_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private Set<User> users = new HashSet<>();
 
     public Answers() {
     }

@@ -1,9 +1,6 @@
 package com.example.Questionnaire.controller;
 
-import com.example.Questionnaire.entity.Answers;
-import com.example.Questionnaire.entity.Question;
-import com.example.Questionnaire.entity.Questionnaire;
-import com.example.Questionnaire.entity.User;
+import com.example.Questionnaire.entity.*;
 import com.example.Questionnaire.entity.enums.Role;
 import com.example.Questionnaire.repository.AnswersRepository;
 import com.example.Questionnaire.repository.QuestionRepository;
@@ -49,10 +46,7 @@ public class AdminController {
                                      Model model) {
 
         long questionnaireId = saveQuestionnaires(questionnaireName);
-
         Questionnaire q = questionnaireRepository.findById(questionnaireId);
-
-
         List<Question> questionListToSave = new ArrayList<>();
         for (String nameQuest : questions) {
             Question question = new Question();
@@ -63,7 +57,7 @@ public class AdminController {
 
         questionRepository.saveAll(questionListToSave);
 
-        return "redirect:/admin/questionnaires";
+        return "redirect:/admin/questionnaires" + "/" + q.getId();
 
     }
 
@@ -76,13 +70,12 @@ public class AdminController {
 
     @PostMapping("deleteQuestionnaire")
     public String deleteQuestionnaire(@RequestParam(name = "questionnaire") Questionnaire questionnaire) {
-
         questionnaireRepository.delete(questionnaire);
-        return "redirect:/admin/questionnairesList";
+        return "redirect:/admin/";
     }
 
 
-    @GetMapping("/questionnairesList")
+    @GetMapping("/")
     public String questionnaires(Model model) {
         model.addAttribute("questionnaires", questionnaireRepository.findAll());
         return "/admin/questionnairesList";
@@ -91,11 +84,8 @@ public class AdminController {
     @GetMapping("/questionnaires/{questionnaire}")
     public String questionnairesEdit(@PathVariable Questionnaire questionnaire,
                                      Model model) {
-
         model.addAttribute("questionnaire", questionnaireRepository.findById(questionnaire.getId()));
         model.addAttribute("questions", questionRepository.findByQuestionnaire(questionnaire));
-
-
         return "/admin/editQuestionnary";
     }
 
@@ -120,7 +110,7 @@ public class AdminController {
             questionnaireRepository.delete(questionnaire);
             return "redirect:/admin/questionnairesList";
         }
-        return "redirect:/admin/questionnaires/" + questionnaire.getId();
+        return "redirect:/admin/questionnairesList/" + questionnaire.getId();
     }
 
     @PostMapping("/saveAnswers")
@@ -148,53 +138,70 @@ public class AdminController {
 
         Questionnaire questionnaire = questionnaireRepository.findByQuestions(question);
 
-        for (Answers a : answers){
+        for (Answers a : answers) {
             System.out.println(a.getName());
         }
 
-       answersRepository.deleteAll(answers);
+        answersRepository.deleteAll(answers);
 
         return "redirect:questionnaires/" + questionnaire.getId() + "/" + question.getId();
 
     }
 
 
-    @GetMapping
-    public String userList(Model model) {
-        model.addAttribute("users", userRepository.findAll());
-        return "/admin/userList";
+    @GetMapping("/showAdminUserAnswers")
+    public String showAdminUserAnswers(Model model) {
+
+        List<User> userList = userRepository.findAll();
+
+        model.addAttribute("users", userList);
+
+        return "/admin/showAdminUserAnswers";
+
     }
 
-    @GetMapping("/{user}")
-    public String userEditForm(@PathVariable User user, Model model) {
-        model.addAttribute("user", user);
-        model.addAttribute("roles", Role.values());
-        return "/admin/userEdit";
-    }
-
-
-    @PostMapping
-    public String userSave(
-            @RequestParam String username,
-            @RequestParam Map<String, String> form,
-            @RequestParam("userId") User user) {
-
-        user.setUsername(username);
-        Set<String> roles = Arrays.stream(Role.values()).
-                map(Role::name)
-                .collect(Collectors.toSet());
-
-        user.getRoles().clear();
-
-        for (String key : form.keySet()) {
-            if (roles.contains(key)) {
-                user.getRoles().add(Role.valueOf(key));
-            }
+    @GetMapping("showAdminUserAnswers/{user}")
+    public String showAllQuestionnairesUser(@PathVariable User user, Model model){
+        Set<Question> questionSet = new HashSet<>();
+        Set<Questionnaire> questionnaireSet = new HashSet<>();
+        for (Answers answers : user.getAnswers()){
+           questionSet.add(questionRepository.findByAnswers(answers));
         }
+        for (Question question : questionSet){
+            questionnaireSet.add(questionnaireRepository.findByQuestions(question));
+        }
+        model.addAttribute("questionnaire" , questionnaireSet);
+        model.addAttribute("user" , user);
 
-        userRepository.save(user);
+        return "/admin/showUserAllQuestionnaries";
 
-        return "redirect:/admin";
+    }
+
+    @GetMapping("/showAdminUserAnswers/{user}/{questionnaire}")
+    public String showQuestionnairesUser(@PathVariable User user ,
+                                         @PathVariable Questionnaire questionnaire,
+                                         Model model){
+
+        Set<Answers> getAllUserAnswer = user.getAnswers();
+        List<ViewUserAnswer> viewUserAnswers = new ArrayList<>();
+
+        questionnaire.getQuestions().forEach(question -> {
+            ViewUserAnswer viewUserAnswer = new ViewUserAnswer();
+            viewUserAnswer.setQuestion(question);
+
+            question.getAnswers().forEach(answer -> {
+                if (getAllUserAnswer.contains(answer)) {
+                    viewUserAnswer.addAnswer(answer);
+                }
+            });
+
+            viewUserAnswers.add(viewUserAnswer);
+        });
+
+        model.addAttribute("questionnaire", questionnaire);
+        model.addAttribute("viewUserAnswers", viewUserAnswers);
+        model.addAttribute("user", user);
+        return "/admin/showOneUserQuestionnaire";
     }
 
 

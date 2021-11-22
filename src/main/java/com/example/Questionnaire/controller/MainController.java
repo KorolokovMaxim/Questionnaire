@@ -13,7 +13,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+
 import java.util.*;
+
 
 @Controller
 public class MainController {
@@ -30,13 +32,8 @@ public class MainController {
         this.userRepository = userRepository1;
     }
 
-    @GetMapping("/index")
-    public String getIndexPage() {
-        return "index";
-    }
 
-
-    @GetMapping("/allQuestionnaire")
+    @GetMapping("/")
     public String getAllQuestionnaire(Model model) {
 
         model.addAttribute("questionnaires", questionnaireRepository.findAll());
@@ -67,12 +64,16 @@ public class MainController {
 
     @PostMapping("/saveUserAnswers")
     public String saveUserAnswers(@RequestParam(name = "queryAnswers[]") Set<Answers> answers,
-                                  @RequestParam(name = "userID") User user) {
-        user.setAnswers(answers);
-        System.out.println(user.getAnswers());
-        userRepository.save(user);
-        return "redirect:/allQuestionnaire";
+                                 @AuthenticationPrincipal User user) {
 
+
+        Set<Answers> userAnswers = user.getAnswers();
+        userAnswers.addAll(answers);
+        user.setAnswers(userAnswers);
+        userRepository.save(user);
+
+
+        return "redirect:/";
     }
 
     @GetMapping("/showMyAnswers/{questionnaire}")
@@ -83,21 +84,17 @@ public class MainController {
         Set<Answers> userAnswers = user.getAnswers();
         List<ViewUserAnswer> viewUserAnswers = new ArrayList<>();
 
-        userAnswers.forEach(userAnswer -> {
-            Question question = questionRepository.findByAnswers(userAnswer);
-            Optional<ViewUserAnswer> viewUserAnswer = viewUserAnswers.stream()
-                    .filter(v -> v.getQuestion() == question).findFirst();
+        questionnaire.getQuestions().forEach(question -> {
+            ViewUserAnswer viewUserAnswer = new ViewUserAnswer();
+            viewUserAnswer.setQuestion(question);
 
-            if (viewUserAnswer.isEmpty()) {
-                ViewUserAnswer viewUserAnswer1 = new ViewUserAnswer();
+            question.getAnswers().forEach(answer -> {
+                if (userAnswers.contains(answer)) {
+                    viewUserAnswer.addAnswer(answer);
+                }
+            });
 
-                viewUserAnswer1.setQuestion(question);
-                viewUserAnswer1.addAnswer(userAnswer);
-
-                viewUserAnswers.add(viewUserAnswer1);
-            } else {
-                viewUserAnswer.get().addAnswer(userAnswer);
-            }
+            viewUserAnswers.add(viewUserAnswer);
         });
 
         model.addAttribute("questionnaire", questionnaire);
